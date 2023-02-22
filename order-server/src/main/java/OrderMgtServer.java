@@ -4,23 +4,20 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 
 public class OrderMgtServer {
-
     private Server server;
 
     private void start() throws IOException {
-        /* The port on which the server should run */
-        int port = 50053;
+        int port = 50055;
         server = ServerBuilder.forPort(port)
                 .addService(new OrderMgtServiceImpl())
                 .build()
                 .start();
-        System.out.println("Server started, listening on " + port);
+        System.out.println("grpc server started, listening on port " + port);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // Use stderr here since the logger may have been reset by its JVM shutdown hook.
-            System.out.println("*** shutting down gRPC server since JVM is shutting down");
+            System.out.println("");
             OrderMgtServer.this.stop();
-            System.out.println("*** server shut down");
+            System.out.println("server shut down");
         }));
     }
 
@@ -29,21 +26,15 @@ public class OrderMgtServer {
             server.shutdown();
         }
     }
-
-    /**
-     * Await termination on the main thread since the grpc library uses daemon threads.
-     */
     private void blockUntilShutdown() throws InterruptedException {
         if (server != null) {
             server.awaitTermination();
         }
     }
-
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         final OrderMgtServer server = new OrderMgtServer();
         server.start();
         server.blockUntilShutdown();
+
     }
-
-
 }
