@@ -12,6 +12,7 @@ public class OrderMgtServer {
         int port = 50053;
         server = ServerBuilder.forPort(port)
                 .addService(new OrderMgtServiceImpl())
+                .addService(new ProductInfoImpl())
                 .build()
                 .start();
         System.out.println("Server started, listening on " + port);

@@ -4,6 +4,9 @@ import ecommerce.Ordermanagement;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import protobuf.com.jie.api.Product;
+import protobuf.com.jie.api.ProductID;
+import protobuf.com.jie.api.ProductInfoGrpc;
 
 import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
@@ -14,29 +17,31 @@ public class OrderMgtClient {
     public static void main(String[] args) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
                 "localhost", 50053).usePlaintext().build();
-        OrderManagementGrpc.OrderManagementBlockingStub stub = OrderManagementGrpc.newBlockingStub(channel);
+        OrderManagementGrpc.OrderManagementBlockingStub stub1 = OrderManagementGrpc.newBlockingStub(channel);
+        ProductInfoGrpc.ProductInfoBlockingStub stub2 = ProductInfoGrpc.newBlockingStub(channel);
+
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
         // Add Order
-        addOrder(stub);
+        addOrderAndGetProduct(stub1, stub2);
 
         // Get Order
-        getOrder(stub);
+        //getOrder(stub);
 
         // Search Orders
-        searchOrder(stub);
+        //searchOrder(stub);
 
         // Update Orders
-        invokeOrderUpdate(asyncStub);
+        //invokeOrderUpdate(asyncStub);
 
         // Process Order
-        invokeOrderProcess(asyncStub);
+        //invokeOrderProcess(asyncStub);
 
 
 
     }
 
-    private static void addOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
+    private static void addOrderAndGetProduct(OrderManagementGrpc.OrderManagementBlockingStub stub1, ProductInfoGrpc.ProductInfoBlockingStub stub2) {
         Ordermanagement.Order order = Ordermanagement.Order
                 .newBuilder()
                 .setId("101")
@@ -45,9 +50,21 @@ public class OrderMgtClient {
                 .setPrice(2300)
                 .build();
 
-        StringValue result = stub.addOrder(order);
+        StringValue result = stub1.addOrder(order);
 
         System.out.println("AddOrder Response -> : " + result.getValue());
+
+        ProductID productID = stub2.addProduct(
+                Product.newBuilder()
+                        .setName("Samsung S10")
+                        .setDescription("Samsung Galaxy S10 is the latest smart phone, " +
+                                "launched in February 2019")
+                        .setPrice(700.0f)
+                        .build());
+        System.out.println("Product ID: " + productID.getValue() + " added successfully.");
+
+        Product product = stub2.getProduct(productID);
+        System.out.println("Product: " + product.toString());
 
     }
 

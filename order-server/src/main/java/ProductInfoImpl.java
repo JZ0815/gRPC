@@ -15,6 +15,7 @@ public class ProductInfoImpl extends ProductInfoGrpc.ProductInfoImplBase {
                            io.grpc.stub.StreamObserver<ProductID> responseObserver) {
         UUID uuid = UUID.randomUUID();
         String randomUUIDString = uuid.toString();
+        System.out.println("Product Service addProduct is called " + randomUUIDString);
         request = request.toBuilder().setId(randomUUIDString).build();
         productMap.put(randomUUIDString, request);
         ProductID id
@@ -29,6 +30,7 @@ public class ProductInfoImpl extends ProductInfoGrpc.ProductInfoImplBase {
                            io.grpc.stub.StreamObserver<Product> responseObserver) {
         String id = request.getValue();
         if (productMap.containsKey(id)) {
+            System.out.println("Product Service getProduct is called " + id);
             responseObserver.onNext((Product) productMap.get(id));
             responseObserver.onCompleted();
         } else {
