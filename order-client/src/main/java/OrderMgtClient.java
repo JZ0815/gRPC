@@ -17,36 +17,14 @@ public class OrderMgtClient {
         OrderManagementGrpc.OrderManagementBlockingStub stub = OrderManagementGrpc.newBlockingStub(channel);
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
-        Ordermanagement.Order order = Ordermanagement.Order
-                .newBuilder()
-                .setId("101")
-                .addItems("iPhone XS").addItems("Mac Book Pro")
-                .setDestination("San Jose, CA")
-                .setPrice(2300)
-                .build();
-
         // Add Order
-        StringValue result = stub.addOrder(order);
-
-        System.out.println("AddOrder Response -> : " + result.getValue());
+        addOrder(stub);
 
         // Get Order
-        StringValue id = StringValue.newBuilder().setValue("101").build();
-        Ordermanagement.Order orderResponse = stub.getOrder(id);
-        System.out.println("GetOrder Response -> : " + orderResponse.toString());
-
+        getOrder(stub);
 
         // Search Orders
-        StringValue searchStr = StringValue.newBuilder().setValue("Google").build();
-        Iterator<Ordermanagement.Order> matchingOrdersItr;
-        matchingOrdersItr = stub.searchOrders(searchStr);
-        while (matchingOrdersItr.hasNext()) {
-            Ordermanagement.Order matchingOrder = matchingOrdersItr.next();
-            System.out.println("Search Order Response -> Matching Order - " + matchingOrder.getId());
-            System.out.println(" Order : " + order.getId() + "\n "
-                    + matchingOrder.toString());
-        }
-
+        searchOrder(stub);
 
         // Update Orders
         invokeOrderUpdate(asyncStub);
@@ -58,6 +36,49 @@ public class OrderMgtClient {
 
     }
 
+    private static void addOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
+        Ordermanagement.Order order = Ordermanagement.Order
+                .newBuilder()
+                .setId("101")
+                .addItems("iPhone XS").addItems("Mac Book Pro")
+                .setDestination("San Jose, CA")
+                .setPrice(2300)
+                .build();
+
+        StringValue result = stub.addOrder(order);
+
+        System.out.println("AddOrder Response -> : " + result.getValue());
+
+    }
+
+    private static void getOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
+        StringValue id = StringValue.newBuilder().setValue("101").build();
+        Ordermanagement.Order orderResponse = stub.getOrder(id);
+        System.out.println("GetOrder Response -> : " + orderResponse.toString());
+    }
+
+    private static void searchOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
+
+        Ordermanagement.Order order = Ordermanagement.Order
+                .newBuilder()
+                .setId("201")
+                .addItems("iPhone XS").addItems("Mac Book Pro")
+                .setDestination("San Jose, CA")
+                .setPrice(2300)
+                .build();
+
+        StringValue searchStr = StringValue.newBuilder().setValue("Google").build();
+        Iterator<Ordermanagement.Order> matchingOrdersItr;
+        matchingOrdersItr = stub
+                //.withDeadline(Deadline.after(2, TimeUnit.SECONDS))
+                .searchOrders(searchStr);
+        while (matchingOrdersItr.hasNext()) {
+            Ordermanagement.Order matchingOrder = matchingOrdersItr.next();
+            System.out.println("Search Order Response -> Matching Order - " + matchingOrder.getId());
+            System.out.println(" Order : " + order.getId() + "\n "
+                    + matchingOrder.toString());
+        }
+    }
 
     private static void invokeOrderUpdate(OrderManagementGrpc.OrderManagementStub asyncStub) {
 

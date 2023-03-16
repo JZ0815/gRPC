@@ -1,18 +1,13 @@
 import com.google.protobuf.StringValue;
-import com.google.protobuf.StringValueOrBuilder;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImplBase {
-
-    private static final Logger logger = Logger.getLogger(OrderMgtServiceImpl.class.getName());
-
 
     private Ordermanagement.Order ord1 = Ordermanagement.Order.newBuilder()
             .setId("102")
@@ -61,7 +56,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     // Unary
     @Override
     public void addOrder(Ordermanagement.Order request, StreamObserver<StringValue> responseObserver) {
-        logger.info("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
+        System.out.println("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
         StringValue id = StringValue.newBuilder().setValue("100500").build();
         responseObserver.onNext(id);
@@ -77,7 +72,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             responseObserver.onNext(order);
             responseObserver.onCompleted();
         } else  {
-            logger.info("Order : " + request.getValue() + " - Not found.");
+            System.out.println("Order : " + request.getValue() + " - Not found.");
             responseObserver.onCompleted();
         }
         // ToDo  Handle errors
@@ -94,7 +89,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             for (int index = 0; index < itemsCount; index++) {
                 String item = order.getItems(index);
                 if (item.contains(request.getValue())) {
-                    logger.info("Item found " + item);
+                    System.out.println("Item found " + item);
                     responseObserver.onNext(order);
                     break;
                 }
@@ -114,18 +109,18 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
                 if (value != null) {
                     orderMap.put(value.getId(), value);
                     updatedOrderStrBuilder.append(value.getId()).append(", ");
-                    logger.info("Order ID : " + value.getId() + " - Updated");
+                    System.out.println("Order ID : " + value.getId() + " - Updated");
                 }
             }
 
             @Override
             public void onError(Throwable t) {
-                logger.info("Order ID update error " + t.getMessage());
+                System.out.println("Order ID update error " + t.getMessage());
             }
 
             @Override
             public void onCompleted() {
-                logger.info("Update orders - Completed");
+                System.out.println("Update orders - Completed");
                 StringValue updatedOrders = StringValue.newBuilder().setValue(updatedOrderStrBuilder.toString()).build();
                 responseObserver.onNext(updatedOrders);
                 responseObserver.onCompleted();
@@ -142,10 +137,10 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             int batchMarker = 0;
             @Override
             public void onNext(StringValue value) {
-                logger.info("Order Proc : ID - " + value.getValue());
+                System.out.println("Order Proc : ID - " + value.getValue());
                 Ordermanagement.Order currentOrder = orderMap.get(value.getValue());
                 if (currentOrder == null) {
-                    logger.info("No order found. ID - " + value.getValue());
+                    System.out.println("No order found. ID - " + value.getValue());
                     return;
                 }
                 // Processing an order and increment batch marker to
