@@ -3,6 +3,7 @@ import com.google.protobuf.StringValueOrBuilder;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
 import io.grpc.Context;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -85,6 +86,12 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         for (Map.Entry<String, Ordermanagement.Order> orderEntry : orderMap.entrySet()) {
             Ordermanagement.Order order = orderEntry.getValue();
             int itemsCount = order.getItemsCount();
+            if (itemsCount == 0) {
+                Status status = Status.FAILED_PRECONDITION.withDescription("Didn't found this");
+                responseObserver.onError(status.asRuntimeException());
+                return;
+            }
+
 
             for (int index = 0; index < itemsCount * 5; index++) {
                 try {
