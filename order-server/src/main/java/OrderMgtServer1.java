@@ -3,7 +3,7 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 
-public class OrderMgtServer {
+public class OrderMgtServer1 {
 
     private Server server;
 
@@ -19,7 +19,7 @@ public class OrderMgtServer {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // Use stderr here since the logger may have been reset by its JVM shutdown hook.
             System.out.println("*** shutting down gRPC server since JVM is shutting down");
-            OrderMgtServer.this.stop();
+            OrderMgtServer1.this.stop();
             System.out.println("*** server shut down");
         }));
     }
@@ -40,7 +40,7 @@ public class OrderMgtServer {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        final OrderMgtServer server = new OrderMgtServer();
+        final OrderMgtServer1 server = new OrderMgtServer1();
         server.start();
         server.blockUntilShutdown();
     }

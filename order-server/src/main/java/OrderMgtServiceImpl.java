@@ -68,41 +68,6 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         responseObserver.onCompleted();
     }
 
-    // Unary
-    @Override
-    public void getOrder(StringValue request, StreamObserver<Ordermanagement.Order> responseObserver) {
-        Ordermanagement.Order order = orderMap.get(request.getValue());
-        if (order != null) {
-            System.out.printf("Order Retrieved : ID - %s", order.getId());
-            responseObserver.onNext(order);
-            responseObserver.onCompleted();
-        } else  {
-            logger.info("Order : " + request.getValue() + " - Not found.");
-            responseObserver.onCompleted();
-        }
-        // ToDo  Handle errors
-        // responseObserver.onError();
-    }
-
-    // Server Streaming
-    @Override
-    public void searchOrders(StringValue request, StreamObserver<Ordermanagement.Order> responseObserver) {
-
-        for (Map.Entry<String, Ordermanagement.Order> orderEntry : orderMap.entrySet()) {
-            Ordermanagement.Order order = orderEntry.getValue();
-            int itemsCount = order.getItemsCount();
-            for (int index = 0; index < itemsCount; index++) {
-                String item = order.getItems(index);
-                if (item.contains(request.getValue())) {
-                    logger.info("Item found " + item);
-                    responseObserver.onNext(order);
-                    break;
-                }
-            }
-        }
-        responseObserver.onCompleted();
-    }
-
     // Client Streaming
     @Override
     public StreamObserver<Ordermanagement.Order> updateOrders(StreamObserver<StringValue> responseObserver) {
@@ -133,64 +98,5 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         };
     }
 
-
-    // Bi-di Streaming
-    @Override
-    public StreamObserver<StringValue> processOrders(StreamObserver<Ordermanagement.CombinedShipment> responseObserver) {
-
-        return new StreamObserver<StringValue>() {
-            int batchMarker = 0;
-            @Override
-            public void onNext(StringValue value) {
-                logger.info("Order Proc : ID - " + value.getValue());
-                Ordermanagement.Order currentOrder = orderMap.get(value.getValue());
-                if (currentOrder == null) {
-                    logger.info("No order found. ID - " + value.getValue());
-                    return;
-                }
-                // Processing an order and increment batch marker to
-                batchMarker++;
-                String orderDestination = currentOrder.getDestination();
-                Ordermanagement.CombinedShipment existingShipment = combinedShipmentMap.get(orderDestination);
-
-                if (existingShipment != null) {
-                    existingShipment = Ordermanagement.CombinedShipment.newBuilder(existingShipment).addOrdersList(currentOrder).build();
-                    combinedShipmentMap.put(orderDestination, existingShipment);
-                } else {
-                    Ordermanagement.CombinedShipment shipment = Ordermanagement.CombinedShipment.newBuilder().build();
-                    shipment = shipment.newBuilderForType()
-                            .addOrdersList(currentOrder)
-                            .setId("CMB-" + new Random().nextInt(1000)+ ":" + currentOrder.getDestination())
-                            .setStatus("Processed!")
-                            .build();
-                    combinedShipmentMap.put(currentOrder.getDestination(), shipment);
-                }
-
-                if (batchMarker == BATCH_SIZE) {
-                    // Order batch completed. Flush all existing shipments.
-                    for (Map.Entry<String, Ordermanagement.CombinedShipment> entry : combinedShipmentMap.entrySet()) {
-                        responseObserver.onNext(entry.getValue());
-                    }
-                    // Reset batch marker
-                    batchMarker = 0;
-                    combinedShipmentMap.clear();
-                }
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-
-            @Override
-            public void onCompleted() {
-                for (Map.Entry<String, Ordermanagement.CombinedShipment> entry : combinedShipmentMap.entrySet()) {
-                    responseObserver.onNext(entry.getValue());
-                }
-                responseObserver.onCompleted();
-            }
-
-        };
-    }
 }
 
