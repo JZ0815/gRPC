@@ -2296,16 +2296,12 @@ public final class Ordermanagement {
       "\001(\t\022\r\n\005price\030\004 \001(\002\022\023\n\013destination\030\005 \001(\t\"" +
       "T\n\020CombinedShipment\022\n\n\002id\030\001 \001(\t\022\016\n\006statu" +
       "s\030\002 \001(\t\022$\n\nordersList\030\003 \003(\0132\020.ecommerce." +
-      "Order2\335\002\n\017OrderManagement\022:\n\010addOrder\022\020." +
+      "Order2\321\001\n\017OrderManagement\022:\n\010addOrder\022\020." +
       "ecommerce.Order\032\034.google.protobuf.String" +
-      "Value\022:\n\010getOrder\022\034.google.protobuf.Stri" +
-      "ngValue\032\020.ecommerce.Order\022@\n\014searchOrder" +
-      "s\022\034.google.protobuf.StringValue\032\020.ecomme" +
-      "rce.Order0\001\022@\n\014updateOrders\022\020.ecommerce." +
-      "Order\032\034.google.protobuf.StringValue(\001\022N\n" +
-      "\rprocessOrders\022\034.google.protobuf.StringV" +
-      "alue\032\033.ecommerce.CombinedShipment(\0010\001b\006p" +
-      "roto3"
+      "Value\022@\n\014searchOrders\022\034.google.protobuf." +
+      "StringValue\032\020.ecommerce.Order0\001\022@\n\014updat" +
+      "eOrders\022\020.ecommerce.Order\032\034.google.proto" +
+      "buf.StringValue(\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

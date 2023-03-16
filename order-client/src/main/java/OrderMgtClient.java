@@ -1,6 +1,7 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Deadline;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -17,11 +18,33 @@ public class OrderMgtClient {
         OrderManagementGrpc.OrderManagementBlockingStub stub = OrderManagementGrpc.newBlockingStub(channel);
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
         // Add Order
-        addOrder(stub);
-        // Update Orders
-        invokeOrderUpdate(asyncStub);
+        if (args.length > 0 && args[0] == "0") {
+            addOrder(stub);
+        } else {
+            searchOrder(stub);
+        }
 
+    }
 
+    private static void searchOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
+
+        Ordermanagement.Order order = Ordermanagement.Order
+                .newBuilder()
+                .setId("101")
+                .addItems("iPhone XS").addItems("Mac Book Pro")
+                .setDestination("San Jose, CA")
+                .setPrice(2300)
+                .build();
+
+        StringValue searchStr = StringValue.newBuilder().setValue("Google").build();
+        Iterator<Ordermanagement.Order> matchingOrdersItr;
+        matchingOrdersItr = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).searchOrders(searchStr);
+        while (matchingOrdersItr.hasNext()) {
+            Ordermanagement.Order matchingOrder = matchingOrdersItr.next();
+            System.out.println("Search Order Response -> Matching Order - " + matchingOrder.getId());
+            System.out.println(" Order : " + order.getId() + "\n "
+                    + matchingOrder.toString());
+        }
     }
 
     private static void addOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
@@ -33,7 +56,7 @@ public class OrderMgtClient {
                 .setPrice(2300)
                 .build();
 
-        StringValue result = stub.addOrder(order);
+        StringValue result = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).addOrder(order);
         System.out.println("AddOrder Response -> : " + result.getValue());
     }
     private static void invokeOrderUpdate(OrderManagementGrpc.OrderManagementStub asyncStub) {

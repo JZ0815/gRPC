@@ -2,6 +2,7 @@ import com.google.protobuf.StringValue;
 import com.google.protobuf.StringValueOrBuilder;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -64,7 +65,48 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         logger.info("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
         StringValue id = StringValue.newBuilder().setValue("100500").build();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         responseObserver.onNext(id);
+        responseObserver.onCompleted();
+
+
+    }
+
+    // Server Streaming
+    @Override
+    public void searchOrders(StringValue request, StreamObserver<Ordermanagement.Order> responseObserver) {
+
+        for (Map.Entry<String, Ordermanagement.Order> orderEntry : orderMap.entrySet()) {
+            Ordermanagement.Order order = orderEntry.getValue();
+            int itemsCount = order.getItemsCount();
+
+            for (int index = 0; index < itemsCount * 5; index++) {
+                try {
+                    Thread.sleep(index * 500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String item = order.getItems(index % itemsCount);
+                if (item.contains(request.getValue())) {
+                    logger.info("Item found " + item);
+
+                    if (!Context.current().isCancelled()) {
+                        responseObserver.onNext(order);
+                    } else {
+                        break;
+                    }
+                }
+
+            }
+
+
+        }
         responseObserver.onCompleted();
     }
 
