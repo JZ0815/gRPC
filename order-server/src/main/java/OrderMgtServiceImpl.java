@@ -5,14 +5,15 @@ import ecommerce.Ordermanagement;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImplBase {
 
-    private static final Logger logger = Logger.getLogger(OrderMgtServiceImpl.class.getName());
-
+    int port;
+    public OrderMgtServiceImpl(int port) {
+        this.port = port;
+    }
 
     private Ordermanagement.Order ord1 = Ordermanagement.Order.newBuilder()
             .setId("102")
@@ -61,9 +62,9 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     // Unary
     @Override
     public void addOrder(Ordermanagement.Order request, StreamObserver<StringValue> responseObserver) {
-        logger.info("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
+        System.out.println("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
-        StringValue id = StringValue.newBuilder().setValue("100500").build();
+        StringValue id = StringValue.newBuilder().setValue("add order by service on port" + port).build();
         responseObserver.onNext(id);
         try {
             Thread.sleep(1000);
@@ -84,7 +85,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
                 if (value != null) {
                     orderMap.put(value.getId(), value);
                     updatedOrderStrBuilder.append(value.getId()).append(", ");
-                    logger.info("Order ID : " + value.getId() + " - Updated");
+                    System.out.println("Order ID : " + value.getId() + " - Updated");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -95,12 +96,12 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
 
             @Override
             public void onError(Throwable t) {
-                logger.info("Order ID update error " + t.getMessage());
+                System.out.println("Order ID update error " + t.getMessage());
             }
 
             @Override
             public void onCompleted() {
-                logger.info("Update orders - Completed");
+                System.out.println("Update orders - Completed");
                 StringValue updatedOrders = StringValue.newBuilder().setValue(updatedOrderStrBuilder.toString()).build();
                 responseObserver.onNext(updatedOrders);
                 responseObserver.onCompleted();

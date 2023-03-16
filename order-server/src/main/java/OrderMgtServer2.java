@@ -11,7 +11,7 @@ public class OrderMgtServer2 {
         /* The port on which the server should run */
         int port = 50054;
         server = ServerBuilder.forPort(port)
-                .addService(new OrderMgtServiceImpl())
+                .addService(new OrderMgtServiceImpl(port))
                 .build()
                 .start();
         System.out.println("Server started, listening on " + port);
