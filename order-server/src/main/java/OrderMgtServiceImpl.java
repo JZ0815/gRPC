@@ -1,6 +1,8 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Context;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -29,8 +31,8 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             .build();
     private Ordermanagement.Order ord4 = Ordermanagement.Order.newBuilder()
             .setId("105")
-            .addItems("Amazon Echo")
-            .setDestination("San Jose, CA")
+            .addItems("Google Test1")
+            .setDestination("Mountain View, CA")
             .setPrice(30)
             .build();
     private Ordermanagement.Order ord5 = Ordermanagement.Order.newBuilder()
@@ -39,13 +41,48 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             .setDestination("Mountain View, CA")
             .setPrice(300)
             .build();
+    private Ordermanagement.Order ord6 = Ordermanagement.Order.newBuilder()
+            .setId("107")
+            .addItems("Google Test2")
+            .setDestination("Mountain View, CA")
+            .setPrice(40)
+            .build();
+    private Ordermanagement.Order ord7 = Ordermanagement.Order.newBuilder()
+            .setId("108")
+            .addItems("Google Test3")
+            .setDestination("Mountain View, CA")
+            .setPrice(50)
+            .build();
+    private Ordermanagement.Order ord8 = Ordermanagement.Order.newBuilder()
+            .setId("109")
+            .addItems("Google Test4")
+            .setDestination("Mountain View, CA")
+            .setPrice(60)
+            .build();
+    private Ordermanagement.Order ord9 = Ordermanagement.Order.newBuilder()
+            .setId("110")
+            .addItems("Google Test4")
+            .setDestination("Mountain View, CA")
+            .setPrice(60)
+            .build();
+    private Ordermanagement.Order ord10 = Ordermanagement.Order.newBuilder()
+            .setId("111")
+            .addItems("Google Test4")
+            .setDestination("Mountain View, CA")
+            .setPrice(60)
+            .build();
 
     private Map<String, Ordermanagement.Order> orderMap = Stream.of(
                     new AbstractMap.SimpleEntry<>(ord1.getId(), ord1),
                     new AbstractMap.SimpleEntry<>(ord2.getId(), ord2),
                     new AbstractMap.SimpleEntry<>(ord3.getId(), ord3),
                     new AbstractMap.SimpleEntry<>(ord4.getId(), ord4),
-                    new AbstractMap.SimpleEntry<>(ord5.getId(), ord5))
+                    new AbstractMap.SimpleEntry<>(ord5.getId(), ord5),
+                    new AbstractMap.SimpleEntry<>(ord6.getId(), ord6),
+                    new AbstractMap.SimpleEntry<>(ord7.getId(), ord7),
+                    new AbstractMap.SimpleEntry<>(ord8.getId(), ord8),
+                    new AbstractMap.SimpleEntry<>(ord9.getId(), ord9),
+                    new AbstractMap.SimpleEntry<>(ord10.getId(), ord10))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     private Map<String, Ordermanagement.CombinedShipment> combinedShipmentMap = new HashMap<>();
@@ -59,6 +96,11 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         System.out.println("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
         StringValue id = StringValue.newBuilder().setValue("100500").build();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         responseObserver.onNext(id);
         responseObserver.onCompleted();
     }
@@ -67,6 +109,12 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     @Override
     public void getOrder(StringValue request, StreamObserver<Ordermanagement.Order> responseObserver) {
         Ordermanagement.Order order = orderMap.get(request.getValue());
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (order != null) {
             System.out.printf("Order Retrieved : ID - %s", order.getId());
             responseObserver.onNext(order);
@@ -87,11 +135,18 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             Ordermanagement.Order order = orderEntry.getValue();
             int itemsCount = order.getItemsCount();
             for (int index = 0; index < itemsCount; index++) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (Context.current().isCancelled()) {
+                    break;
+                }
                 String item = order.getItems(index);
                 if (item.contains(request.getValue())) {
                     System.out.println("Item found " + item);
                     responseObserver.onNext(order);
-                    break;
                 }
             }
         }

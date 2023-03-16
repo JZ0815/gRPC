@@ -1,6 +1,7 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Deadline;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -18,19 +19,19 @@ public class OrderMgtClient {
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
         // Add Order
-        addOrder(stub);
+        //addOrder(stub);
 
         // Get Order
-        getOrder(stub);
+        //getOrder(stub);
 
         // Search Orders
         searchOrder(stub);
 
         // Update Orders
-        invokeOrderUpdate(asyncStub);
+        //invokeOrderUpdate(asyncStub);
 
         // Process Order
-        invokeOrderProcess(asyncStub);
+        //invokeOrderProcess(asyncStub);
 
 
 
@@ -45,7 +46,7 @@ public class OrderMgtClient {
                 .setPrice(2300)
                 .build();
 
-        StringValue result = stub.addOrder(order);
+        StringValue result = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).addOrder(order);
 
         System.out.println("AddOrder Response -> : " + result.getValue());
 
@@ -53,7 +54,7 @@ public class OrderMgtClient {
 
     private static void getOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
         StringValue id = StringValue.newBuilder().setValue("101").build();
-        Ordermanagement.Order orderResponse = stub.getOrder(id);
+        Ordermanagement.Order orderResponse = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).getOrder(id);
         System.out.println("GetOrder Response -> : " + orderResponse.toString());
     }
 
@@ -61,7 +62,7 @@ public class OrderMgtClient {
 
         Ordermanagement.Order order = Ordermanagement.Order
                 .newBuilder()
-                .setId("201")
+                .setId("101")
                 .addItems("iPhone XS").addItems("Mac Book Pro")
                 .setDestination("San Jose, CA")
                 .setPrice(2300)
@@ -70,7 +71,7 @@ public class OrderMgtClient {
         StringValue searchStr = StringValue.newBuilder().setValue("Google").build();
         Iterator<Ordermanagement.Order> matchingOrdersItr;
         matchingOrdersItr = stub
-                //.withDeadline(Deadline.after(2, TimeUnit.SECONDS))
+                .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
                 .searchOrders(searchStr);
         while (matchingOrdersItr.hasNext()) {
             Ordermanagement.Order matchingOrder = matchingOrdersItr.next();
@@ -121,7 +122,7 @@ public class OrderMgtClient {
             }
         };
 
-        StreamObserver<Ordermanagement.Order> updateOrderRequestObserver = asyncStub.updateOrders(updateOrderResponseObserver);
+        StreamObserver<Ordermanagement.Order> updateOrderRequestObserver = asyncStub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).updateOrders(updateOrderResponseObserver);
         updateOrderRequestObserver.onNext(updOrder1);
         updateOrderRequestObserver.onNext(updOrder2);
         updateOrderRequestObserver.onNext(updOrder3);
@@ -169,7 +170,7 @@ public class OrderMgtClient {
             }
         };
 
-        StreamObserver<StringValue> orderProcessRequestObserver =  asyncStub.processOrders(orderProcessResponseObserver);
+        StreamObserver<StringValue> orderProcessRequestObserver =  asyncStub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).processOrders(orderProcessResponseObserver);
 
         orderProcessRequestObserver.onNext(StringValue.newBuilder().setValue("102").build());
         orderProcessRequestObserver.onNext(StringValue.newBuilder().setValue("103").build());
