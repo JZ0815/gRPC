@@ -74,7 +74,8 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             responseObserver.onCompleted();
         } else  {
             System.out.println("Order : " + request.getValue() + " - Not found.");
-            Status status = Status.NOT_FOUND;
+            //Status status = Status.NOT_FOUND;
+            Status status = Status.FAILED_PRECONDITION.withDescription("Not able to find this order");
             responseObserver.onError(status.asRuntimeException());
             return;
             //responseObserver.onCompleted();
