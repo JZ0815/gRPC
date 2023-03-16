@@ -65,6 +65,11 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
         orderMap.put(request.getId(), request);
         StringValue id = StringValue.newBuilder().setValue("100500").build();
         responseObserver.onNext(id);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         responseObserver.onCompleted();
     }
 
@@ -80,6 +85,11 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
                     orderMap.put(value.getId(), value);
                     updatedOrderStrBuilder.append(value.getId()).append(", ");
                     logger.info("Order ID : " + value.getId() + " - Updated");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
