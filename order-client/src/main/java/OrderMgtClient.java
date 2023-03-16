@@ -3,6 +3,7 @@ import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 
 import java.util.Iterator;
@@ -13,7 +14,10 @@ public class OrderMgtClient {
 
     public static void main(String[] args) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                "localhost", 50053).usePlaintext().build();
+                "localhost", 50053)
+                .intercept(MetadataUtils.newAttachHeadersInterceptor(ClientAuth.getClientToken()))
+                .usePlaintext()
+                .build();
         OrderManagementGrpc.OrderManagementBlockingStub stub = OrderManagementGrpc.newBlockingStub(channel);
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
@@ -24,13 +28,13 @@ public class OrderMgtClient {
         getOrder(stub);
 
         // Search Orders
-        searchOrder(stub);
+        //searchOrder(stub);
 
         // Update Orders
-        invokeOrderUpdate(asyncStub);
+        //invokeOrderUpdate(asyncStub);
 
         // Process Order
-        invokeOrderProcess(asyncStub);
+        //invokeOrderProcess(asyncStub);
 
 
 

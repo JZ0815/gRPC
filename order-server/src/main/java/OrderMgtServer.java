@@ -11,6 +11,7 @@ public class OrderMgtServer {
         /* The port on which the server should run */
         int port = 50053;
         server = ServerBuilder.forPort(port)
+                .intercept(new AuthInterceptor())
                 .addService(new OrderMgtServiceImpl())
                 .build()
                 .start();
