@@ -64,7 +64,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     public void addOrder(Ordermanagement.Order request, StreamObserver<StringValue> responseObserver) {
         System.out.println("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
-        StringValue id = StringValue.newBuilder().setValue("add order by service on port" + port).build();
+        StringValue id = StringValue.newBuilder().setValue("add order by service on port " + port).build();
         responseObserver.onNext(id);
         try {
             Thread.sleep(1000);
