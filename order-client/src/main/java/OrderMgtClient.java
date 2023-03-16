@@ -14,7 +14,10 @@ public class OrderMgtClient {
 
     public static void main(String[] args) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(
-                "localhost", 50053).usePlaintext().build();
+                "localhost", 50053)
+                .intercept(new DeadlineInterceptor())
+                .usePlaintext()
+                .build();
         OrderManagementGrpc.OrderManagementBlockingStub stub = OrderManagementGrpc.newBlockingStub(channel);
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
@@ -46,7 +49,9 @@ public class OrderMgtClient {
                 .setPrice(2300)
                 .build();
 
-        StringValue result = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).addOrder(order);
+        StringValue result = stub
+                .withDeadline(Deadline.after(4, TimeUnit.SECONDS))
+                .addOrder(order);
 
         System.out.println("AddOrder Response -> : " + result.getValue());
 
@@ -54,7 +59,9 @@ public class OrderMgtClient {
 
     private static void getOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
         StringValue id = StringValue.newBuilder().setValue("101").build();
-        Ordermanagement.Order orderResponse = stub.withDeadline(Deadline.after(2, TimeUnit.SECONDS)).getOrder(id);
+        Ordermanagement.Order orderResponse = stub
+                // .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
+                .getOrder(id);
         System.out.println("GetOrder Response -> : " + orderResponse.toString());
     }
 
@@ -71,7 +78,7 @@ public class OrderMgtClient {
         StringValue searchStr = StringValue.newBuilder().setValue("Google").build();
         Iterator<Ordermanagement.Order> matchingOrdersItr;
         matchingOrdersItr = stub
-                .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
+                .withDeadline(Deadline.after(4, TimeUnit.SECONDS))
                 .searchOrders(searchStr);
         while (matchingOrdersItr.hasNext()) {
             Ordermanagement.Order matchingOrder = matchingOrdersItr.next();
