@@ -14,6 +14,114 @@ public final class Ordermanagement {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code ecommerce.ErrorCode}
+   */
+  public enum ErrorCode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>BELOW_100 = 0;</code>
+     */
+    BELOW_100(0),
+    /**
+     * <code>ABOVE_200 = 1;</code>
+     */
+    ABOVE_200(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>BELOW_100 = 0;</code>
+     */
+    public static final int BELOW_100_VALUE = 0;
+    /**
+     * <code>ABOVE_200 = 1;</code>
+     */
+    public static final int ABOVE_200_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ErrorCode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ErrorCode forNumber(int value) {
+      switch (value) {
+        case 0: return BELOW_100;
+        case 1: return ABOVE_200;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ErrorCode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ErrorCode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ErrorCode>() {
+            public ErrorCode findValueByNumber(int number) {
+              return ErrorCode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return ecommerce.Ordermanagement.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final ErrorCode[] VALUES = values();
+
+    public static ErrorCode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ErrorCode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:ecommerce.ErrorCode)
+  }
+
   public interface OrderOrBuilder extends
       // @@protoc_insertion_point(interface_extends:ecommerce.Order)
       com.google.protobuf.MessageOrBuilder {
@@ -1176,6 +1284,603 @@ public final class Ordermanagement {
 
   }
 
+  public interface ErrorResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:ecommerce.ErrorResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 input = 1;</code>
+     * @return The input.
+     */
+    int getInput();
+
+    /**
+     * <code>.ecommerce.ErrorCode error_code = 2;</code>
+     * @return The enum numeric value on the wire for errorCode.
+     */
+    int getErrorCodeValue();
+    /**
+     * <code>.ecommerce.ErrorCode error_code = 2;</code>
+     * @return The errorCode.
+     */
+    ecommerce.Ordermanagement.ErrorCode getErrorCode();
+  }
+  /**
+   * Protobuf type {@code ecommerce.ErrorResponse}
+   */
+  public static final class ErrorResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:ecommerce.ErrorResponse)
+      ErrorResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ErrorResponse.newBuilder() to construct.
+    private ErrorResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ErrorResponse() {
+      errorCode_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ErrorResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ErrorResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              input_ = input.readInt32();
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              errorCode_ = rawValue;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return ecommerce.Ordermanagement.internal_static_ecommerce_ErrorResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return ecommerce.Ordermanagement.internal_static_ecommerce_ErrorResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              ecommerce.Ordermanagement.ErrorResponse.class, ecommerce.Ordermanagement.ErrorResponse.Builder.class);
+    }
+
+    public static final int INPUT_FIELD_NUMBER = 1;
+    private int input_;
+    /**
+     * <code>int32 input = 1;</code>
+     * @return The input.
+     */
+    @java.lang.Override
+    public int getInput() {
+      return input_;
+    }
+
+    public static final int ERROR_CODE_FIELD_NUMBER = 2;
+    private int errorCode_;
+    /**
+     * <code>.ecommerce.ErrorCode error_code = 2;</code>
+     * @return The enum numeric value on the wire for errorCode.
+     */
+    @java.lang.Override public int getErrorCodeValue() {
+      return errorCode_;
+    }
+    /**
+     * <code>.ecommerce.ErrorCode error_code = 2;</code>
+     * @return The errorCode.
+     */
+    @java.lang.Override public ecommerce.Ordermanagement.ErrorCode getErrorCode() {
+      @SuppressWarnings("deprecation")
+      ecommerce.Ordermanagement.ErrorCode result = ecommerce.Ordermanagement.ErrorCode.valueOf(errorCode_);
+      return result == null ? ecommerce.Ordermanagement.ErrorCode.UNRECOGNIZED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (input_ != 0) {
+        output.writeInt32(1, input_);
+      }
+      if (errorCode_ != ecommerce.Ordermanagement.ErrorCode.BELOW_100.getNumber()) {
+        output.writeEnum(2, errorCode_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (input_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, input_);
+      }
+      if (errorCode_ != ecommerce.Ordermanagement.ErrorCode.BELOW_100.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, errorCode_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof ecommerce.Ordermanagement.ErrorResponse)) {
+        return super.equals(obj);
+      }
+      ecommerce.Ordermanagement.ErrorResponse other = (ecommerce.Ordermanagement.ErrorResponse) obj;
+
+      if (getInput()
+          != other.getInput()) return false;
+      if (errorCode_ != other.errorCode_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + INPUT_FIELD_NUMBER;
+      hash = (53 * hash) + getInput();
+      hash = (37 * hash) + ERROR_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + errorCode_;
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static ecommerce.Ordermanagement.ErrorResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(ecommerce.Ordermanagement.ErrorResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code ecommerce.ErrorResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:ecommerce.ErrorResponse)
+        ecommerce.Ordermanagement.ErrorResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return ecommerce.Ordermanagement.internal_static_ecommerce_ErrorResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return ecommerce.Ordermanagement.internal_static_ecommerce_ErrorResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                ecommerce.Ordermanagement.ErrorResponse.class, ecommerce.Ordermanagement.ErrorResponse.Builder.class);
+      }
+
+      // Construct using ecommerce.Ordermanagement.ErrorResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        input_ = 0;
+
+        errorCode_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return ecommerce.Ordermanagement.internal_static_ecommerce_ErrorResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public ecommerce.Ordermanagement.ErrorResponse getDefaultInstanceForType() {
+        return ecommerce.Ordermanagement.ErrorResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public ecommerce.Ordermanagement.ErrorResponse build() {
+        ecommerce.Ordermanagement.ErrorResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public ecommerce.Ordermanagement.ErrorResponse buildPartial() {
+        ecommerce.Ordermanagement.ErrorResponse result = new ecommerce.Ordermanagement.ErrorResponse(this);
+        result.input_ = input_;
+        result.errorCode_ = errorCode_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof ecommerce.Ordermanagement.ErrorResponse) {
+          return mergeFrom((ecommerce.Ordermanagement.ErrorResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(ecommerce.Ordermanagement.ErrorResponse other) {
+        if (other == ecommerce.Ordermanagement.ErrorResponse.getDefaultInstance()) return this;
+        if (other.getInput() != 0) {
+          setInput(other.getInput());
+        }
+        if (other.errorCode_ != 0) {
+          setErrorCodeValue(other.getErrorCodeValue());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        ecommerce.Ordermanagement.ErrorResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (ecommerce.Ordermanagement.ErrorResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int input_ ;
+      /**
+       * <code>int32 input = 1;</code>
+       * @return The input.
+       */
+      @java.lang.Override
+      public int getInput() {
+        return input_;
+      }
+      /**
+       * <code>int32 input = 1;</code>
+       * @param value The input to set.
+       * @return This builder for chaining.
+       */
+      public Builder setInput(int value) {
+        
+        input_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 input = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearInput() {
+        
+        input_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int errorCode_ = 0;
+      /**
+       * <code>.ecommerce.ErrorCode error_code = 2;</code>
+       * @return The enum numeric value on the wire for errorCode.
+       */
+      @java.lang.Override public int getErrorCodeValue() {
+        return errorCode_;
+      }
+      /**
+       * <code>.ecommerce.ErrorCode error_code = 2;</code>
+       * @param value The enum numeric value on the wire for errorCode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setErrorCodeValue(int value) {
+        
+        errorCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ecommerce.ErrorCode error_code = 2;</code>
+       * @return The errorCode.
+       */
+      @java.lang.Override
+      public ecommerce.Ordermanagement.ErrorCode getErrorCode() {
+        @SuppressWarnings("deprecation")
+        ecommerce.Ordermanagement.ErrorCode result = ecommerce.Ordermanagement.ErrorCode.valueOf(errorCode_);
+        return result == null ? ecommerce.Ordermanagement.ErrorCode.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.ecommerce.ErrorCode error_code = 2;</code>
+       * @param value The errorCode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setErrorCode(ecommerce.Ordermanagement.ErrorCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        errorCode_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.ecommerce.ErrorCode error_code = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearErrorCode() {
+        
+        errorCode_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:ecommerce.ErrorResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:ecommerce.ErrorResponse)
+    private static final ecommerce.Ordermanagement.ErrorResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new ecommerce.Ordermanagement.ErrorResponse();
+    }
+
+    public static ecommerce.Ordermanagement.ErrorResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ErrorResponse>
+        PARSER = new com.google.protobuf.AbstractParser<ErrorResponse>() {
+      @java.lang.Override
+      public ErrorResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ErrorResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ErrorResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ErrorResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public ecommerce.Ordermanagement.ErrorResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface CombinedShipmentOrBuilder extends
       // @@protoc_insertion_point(interface_extends:ecommerce.CombinedShipment)
       com.google.protobuf.MessageOrBuilder {
@@ -2277,6 +2982,11 @@ public final class Ordermanagement {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ecommerce_Order_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ecommerce_ErrorResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ecommerce_ErrorResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ecommerce_CombinedShipment_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -2294,18 +3004,21 @@ public final class Ordermanagement {
       "le/protobuf/wrappers.proto\"[\n\005Order\022\n\n\002i" +
       "d\030\001 \001(\t\022\r\n\005items\030\002 \003(\t\022\023\n\013description\030\003 " +
       "\001(\t\022\r\n\005price\030\004 \001(\002\022\023\n\013destination\030\005 \001(\t\"" +
-      "T\n\020CombinedShipment\022\n\n\002id\030\001 \001(\t\022\016\n\006statu" +
-      "s\030\002 \001(\t\022$\n\nordersList\030\003 \003(\0132\020.ecommerce." +
-      "Order2\335\002\n\017OrderManagement\022:\n\010addOrder\022\020." +
-      "ecommerce.Order\032\034.google.protobuf.String" +
-      "Value\022:\n\010getOrder\022\034.google.protobuf.Stri" +
-      "ngValue\032\020.ecommerce.Order\022@\n\014searchOrder" +
-      "s\022\034.google.protobuf.StringValue\032\020.ecomme" +
-      "rce.Order0\001\022@\n\014updateOrders\022\020.ecommerce." +
-      "Order\032\034.google.protobuf.StringValue(\001\022N\n" +
-      "\rprocessOrders\022\034.google.protobuf.StringV" +
-      "alue\032\033.ecommerce.CombinedShipment(\0010\001b\006p" +
-      "roto3"
+      "H\n\rErrorResponse\022\r\n\005input\030\001 \001(\005\022(\n\nerror" +
+      "_code\030\002 \001(\0162\024.ecommerce.ErrorCode\"T\n\020Com" +
+      "binedShipment\022\n\n\002id\030\001 \001(\t\022\016\n\006status\030\002 \001(" +
+      "\t\022$\n\nordersList\030\003 \003(\0132\020.ecommerce.Order*" +
+      ")\n\tErrorCode\022\r\n\tBELOW_100\020\000\022\r\n\tABOVE_200" +
+      "\020\0012\335\002\n\017OrderManagement\022:\n\010addOrder\022\020.eco" +
+      "mmerce.Order\032\034.google.protobuf.StringVal" +
+      "ue\022:\n\010getOrder\022\034.google.protobuf.StringV" +
+      "alue\032\020.ecommerce.Order\022@\n\014searchOrders\022\034" +
+      ".google.protobuf.StringValue\032\020.ecommerce" +
+      ".Order0\001\022@\n\014updateOrders\022\020.ecommerce.Ord" +
+      "er\032\034.google.protobuf.StringValue(\001\022N\n\rpr" +
+      "ocessOrders\022\034.google.protobuf.StringValu" +
+      "e\032\033.ecommerce.CombinedShipment(\0010\001b\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2318,8 +3031,14 @@ public final class Ordermanagement {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ecommerce_Order_descriptor,
         new java.lang.String[] { "Id", "Items", "Description", "Price", "Destination", });
-    internal_static_ecommerce_CombinedShipment_descriptor =
+    internal_static_ecommerce_ErrorResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_ecommerce_ErrorResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ecommerce_ErrorResponse_descriptor,
+        new java.lang.String[] { "Input", "ErrorCode", });
+    internal_static_ecommerce_CombinedShipment_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_ecommerce_CombinedShipment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ecommerce_CombinedShipment_descriptor,

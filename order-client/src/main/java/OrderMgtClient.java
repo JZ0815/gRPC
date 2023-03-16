@@ -3,7 +3,9 @@ import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
 import io.grpc.Status;
+import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
 
 import java.util.Iterator;
@@ -59,8 +61,9 @@ public class OrderMgtClient {
             System.out.println("GetOrder Response -> : " + orderResponse.toString());
 
         } catch (Exception e) {
-            Status status = Status.fromThrowable(e);
-            System.out.println(status.getCode() + " : " + status.getDescription());
+            Metadata metadata = Status.trailersFromThrowable(e);
+            Ordermanagement.ErrorResponse errorResponse = metadata.get(ProtoUtils.keyForProto(Ordermanagement.ErrorResponse.getDefaultInstance()));
+            System.out.println(errorResponse.getInput() + " : " + errorResponse.getErrorCode());
         }
     }
 

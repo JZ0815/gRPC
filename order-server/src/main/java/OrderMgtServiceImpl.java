@@ -1,7 +1,9 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Metadata;
 import io.grpc.Status;
+import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -67,21 +69,36 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     // Unary
     @Override
     public void getOrder(StringValue request, StreamObserver<Ordermanagement.Order> responseObserver) {
-        Ordermanagement.Order order = orderMap.get(request.getValue());
-        if (order != null) {
+
+        String orderIdStr = request.getValue();
+        int orderId = Integer.parseInt(orderIdStr);
+        Ordermanagement.Order order = orderMap.get(orderIdStr);
+
+        if (orderId >= 500 || orderId < 100) {
+
+            System.out.println("Order : " + request.getValue() + " out of Range");
+            Metadata metadata = new Metadata();
+            Metadata.Key<Ordermanagement.ErrorResponse> responseKey = ProtoUtils.keyForProto(Ordermanagement.ErrorResponse.getDefaultInstance());
+            Ordermanagement.ErrorCode errorCode = (orderId >= 500 ? Ordermanagement.ErrorCode.ABOVE_200: Ordermanagement.ErrorCode.BELOW_100);
+            Ordermanagement.ErrorResponse errorResponse = Ordermanagement.ErrorResponse.newBuilder()
+                    .setErrorCode(errorCode)
+                    .setInput(orderId)
+                    .build();
+            metadata.put(responseKey, errorResponse);
+            responseObserver.onError(Status.FAILED_PRECONDITION.asRuntimeException(metadata));
+            return;
+
+        } else if (order != null) {
             System.out.printf("Order Retrieved : ID - %s", order.getId());
             responseObserver.onNext(order);
             responseObserver.onCompleted();
-        } else  {
+        } else {
             System.out.println("Order : " + request.getValue() + " - Not found.");
-            //Status status = Status.NOT_FOUND;
-            Status status = Status.FAILED_PRECONDITION.withDescription("Not able to find this order");
+            Status status = Status.NOT_FOUND;
             responseObserver.onError(status.asRuntimeException());
             return;
-            //responseObserver.onCompleted();
         }
-        // ToDo  Handle errors
-        // responseObserver.onError();
+
     }
 
     // Server Streaming
