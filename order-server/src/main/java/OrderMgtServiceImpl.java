@@ -1,6 +1,7 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -73,7 +74,10 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             responseObserver.onCompleted();
         } else  {
             System.out.println("Order : " + request.getValue() + " - Not found.");
-            responseObserver.onCompleted();
+            Status status = Status.NOT_FOUND;
+            responseObserver.onError(status.asRuntimeException());
+            return;
+            //responseObserver.onCompleted();
         }
         // ToDo  Handle errors
         // responseObserver.onError();

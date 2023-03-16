@@ -3,6 +3,7 @@ import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 
 import java.util.Iterator;
@@ -18,19 +19,19 @@ public class OrderMgtClient {
         OrderManagementGrpc.OrderManagementStub asyncStub = OrderManagementGrpc.newStub(channel);
 
         // Add Order
-        addOrder(stub);
+        //addOrder(stub);
 
         // Get Order
         getOrder(stub);
 
         // Search Orders
-        searchOrder(stub);
+        //searchOrder(stub);
 
         // Update Orders
-        invokeOrderUpdate(asyncStub);
+        //invokeOrderUpdate(asyncStub);
 
         // Process Order
-        invokeOrderProcess(asyncStub);
+        //invokeOrderProcess(asyncStub);
 
 
 
@@ -52,9 +53,15 @@ public class OrderMgtClient {
     }
 
     private static void getOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
-        StringValue id = StringValue.newBuilder().setValue("101").build();
-        Ordermanagement.Order orderResponse = stub.getOrder(id);
-        System.out.println("GetOrder Response -> : " + orderResponse.toString());
+        StringValue id = StringValue.newBuilder().setValue("501").build();
+        try {
+            Ordermanagement.Order orderResponse = stub.getOrder(id);
+            System.out.println("GetOrder Response -> : " + orderResponse.toString());
+
+        } catch (Exception e) {
+            Status status = Status.fromThrowable(e);
+            System.out.println(status.getCode() + " : " + status.getDescription());
+        }
     }
 
     private static void searchOrder(OrderManagementGrpc.OrderManagementBlockingStub stub) {
