@@ -79,7 +79,7 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
             System.out.println("Order : " + request.getValue() + " out of Range");
             Metadata metadata = new Metadata();
             Metadata.Key<Ordermanagement.ErrorResponse> responseKey = ProtoUtils.keyForProto(Ordermanagement.ErrorResponse.getDefaultInstance());
-            Ordermanagement.ErrorCode errorCode = (orderId >= 500 ? Ordermanagement.ErrorCode.ABOVE_200: Ordermanagement.ErrorCode.BELOW_100);
+            Ordermanagement.ErrorCode errorCode = (orderId >= 500 ? Ordermanagement.ErrorCode.ABOVE_500: Ordermanagement.ErrorCode.BELOW_100);
             Ordermanagement.ErrorResponse errorResponse = Ordermanagement.ErrorResponse.newBuilder()
                     .setErrorCode(errorCode)
                     .setInput(orderId)

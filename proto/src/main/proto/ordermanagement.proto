@@ -20,14 +20,18 @@ message Order {
   string destination = 5;
 }
 
-enum ErrorCode {
+enum BadCode {
   BELOW_100 = 0;
-  ABOVE_200 = 1;
+  ABOVE_500 = 1;
 }
 
 message ErrorResponse {
   int32 input = 1;
-  ErrorCode error_code = 2;
+  BadCode error_code = 2;
+  SomethingElse somethingElse = 3;
+}
+message SomethingElse {
+  int32 id = 1;
 }
 
 message CombinedShipment {

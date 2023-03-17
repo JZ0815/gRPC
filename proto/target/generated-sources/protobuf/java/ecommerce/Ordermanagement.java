@@ -24,9 +24,9 @@ public final class Ordermanagement {
      */
     BELOW_100(0),
     /**
-     * <code>ABOVE_200 = 1;</code>
+     * <code>ABOVE_500 = 1;</code>
      */
-    ABOVE_200(1),
+    ABOVE_500(1),
     UNRECOGNIZED(-1),
     ;
 
@@ -35,9 +35,9 @@ public final class Ordermanagement {
      */
     public static final int BELOW_100_VALUE = 0;
     /**
-     * <code>ABOVE_200 = 1;</code>
+     * <code>ABOVE_500 = 1;</code>
      */
-    public static final int ABOVE_200_VALUE = 1;
+    public static final int ABOVE_500_VALUE = 1;
 
 
     public final int getNumber() {
@@ -65,7 +65,7 @@ public final class Ordermanagement {
     public static ErrorCode forNumber(int value) {
       switch (value) {
         case 0: return BELOW_100;
-        case 1: return ABOVE_200;
+        case 1: return ABOVE_500;
         default: return null;
       }
     }
@@ -3008,7 +3008,7 @@ public final class Ordermanagement {
       "_code\030\002 \001(\0162\024.ecommerce.ErrorCode\"T\n\020Com" +
       "binedShipment\022\n\n\002id\030\001 \001(\t\022\016\n\006status\030\002 \001(" +
       "\t\022$\n\nordersList\030\003 \003(\0132\020.ecommerce.Order*" +
-      ")\n\tErrorCode\022\r\n\tBELOW_100\020\000\022\r\n\tABOVE_200" +
+      ")\n\tErrorCode\022\r\n\tBELOW_100\020\000\022\r\n\tABOVE_500" +
       "\020\0012\335\002\n\017OrderManagement\022:\n\010addOrder\022\020.eco" +
       "mmerce.Order\032\034.google.protobuf.StringVal" +
       "ue\022:\n\010getOrder\022\034.google.protobuf.StringV" +

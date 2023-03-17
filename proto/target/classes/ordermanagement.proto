@@ -22,7 +22,7 @@ message Order {
 
 enum ErrorCode {
   BELOW_100 = 0;
-  ABOVE_200 = 1;
+  ABOVE_500 = 1;
 }
 
 message ErrorResponse {
