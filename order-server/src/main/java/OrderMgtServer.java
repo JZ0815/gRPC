@@ -7,10 +7,12 @@ public class OrderMgtServer {
 
     private Server server;
 
+    //Reference : https://blog.csdn.net/gaoliang1719/article/details/106030827?spm=1001.2101.3001.6650.16&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-106030827-blog-105814132.pc_relevant_3mothn_strategy_and_data_recovery&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-16-106030827-blog-105814132.pc_relevant_3mothn_strategy_and_data_recovery&utm_relevant_index=17
     private void start() throws IOException {
         /* The port on which the server should run */
         int port = 50053;
         server = ServerBuilder.forPort(port)
+                .intercept(new CompressionInterceptor())
                 .addService(new OrderMgtServiceImpl())
                 .build()
                 .start();

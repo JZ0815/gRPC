@@ -1,6 +1,7 @@
 import com.google.protobuf.StringValue;
 import ecommerce.OrderManagementGrpc;
 import ecommerce.Ordermanagement;
+import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 
 import java.util.*;
@@ -58,9 +59,11 @@ public class OrderMgtServiceImpl extends OrderManagementGrpc.OrderManagementImpl
     public void addOrder(Ordermanagement.Order request, StreamObserver<StringValue> responseObserver) {
         System.out.println("Order Added - ID: " + request.getId() + ", Destination : " + request.getDestination());
         orderMap.put(request.getId(), request);
+        ServerCallStreamObserver<StringValue> streamResponseObserver = (ServerCallStreamObserver)responseObserver;
+        streamResponseObserver.setCompression("gzip");
         StringValue id = StringValue.newBuilder().setValue("100500").build();
-        responseObserver.onNext(id);
-        responseObserver.onCompleted();
+        streamResponseObserver.onNext(id);
+        streamResponseObserver.onCompleted();
     }
 
     // Unary

@@ -45,7 +45,7 @@ public class OrderMgtClient {
                 .setPrice(2300)
                 .build();
 
-        StringValue result = stub.addOrder(order);
+        StringValue result = stub.withCompression("gzip").addOrder(order);
 
         System.out.println("AddOrder Response -> : " + result.getValue());
 
