@@ -1,1 +1,11 @@
-
+Useful Branches:
+grpc-order-service-4-patterns
+ch5-1-use-grpc-error-code
+ch5-2-use-grpc-error-code2
+ch5-3-use-metadata-custom-error
+ch5-4-timeout
+ch5-5-use-client-interceptor
+ch5-6-interceptor-metadata-jwt-auth
+ch5-7-multiplexing
+ch5-8-client-side-lb
+ch5-9-compression
